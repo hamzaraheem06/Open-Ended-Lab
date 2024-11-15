@@ -63,7 +63,24 @@ int placeOrder() {
     return i; // i represents the number of elements to be order items.
 }
 
+void displayOrder(int noOfItems){
+    cout<<"You ordered: \nName\t\tQuatity\t\tPrice Per Item\n";
+
+    for(int i=0; i<=noOfItems; i++){
+        cout<<names[i]<<"\t\t"<<quantities[i]<<"\t\t"<<prices[i]<<"\n";
+    }
+
+    char payment;
+    cout<<"Proceed to payment (y/n): ";
+    cin>>payment;
+
+}
+
+
 int main(){
-    cout<<placeOrder();
+    int orderedItems = placeOrder();
+    for(int i=0; i<=orderedItems; i++){
+        cout<<orderIndexes[i]<<"\t"<<quantityOfProduct[i];
+    }
     return 0;
 }

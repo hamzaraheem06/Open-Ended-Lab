@@ -8,9 +8,14 @@ const int MAX_ITEMS = 20; // Maximum number of products the store can have
 int NUM_ITEMS = 10; // current number of products the store have.
 
 // Parallel arrays to store item attributes
-string names[MAX_ITEMS] = { "Laptop", "Phone", "Tablet", "Headphones", "Charger", "Keyboard", "Mouse", "Monitor", "Printer", "USB Cable" };
-double prices[MAX_ITEMS] = { 60000, 30000, 15000, 2000, 500, 1500, 700, 10000, 5000, 100 };
-int quantities[MAX_ITEMS] = { 10, 15, 5, 20, 50, 30, 40, 8, 12, 100 };
+
+// NULL is built in constant that refers that the current location is empty/uninitialized
+
+string names[MAX_ITEMS] = { "Laptop", "Phone", "Tablet", "Headphones", "Charger", "Keyboard", "Mouse", "Monitor", "Printer", "USB Cable" , "", "", "", "", "", "", "", "", "", "" };
+
+// 0 means it is empty or uninitialized
+double prices[MAX_ITEMS] = { 60000, 30000, 15000, 2000, 500, 1500, 700, 10000, 5000, 100 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+int quantities[MAX_ITEMS] = { 10, 15, 5, 20, 50, 30, 40, 8, 12, 100 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 int orderedItemsIndex[MAX_ITEMS], quantityOfProduct[MAX_ITEMS]; // arrays for user order
 
 // display all the products the store currently have. 
@@ -78,6 +83,7 @@ void addProduct() {
     }
 
     NUM_ITEMS++; // if there is capacity, we increment the current number of items by 1
+
     cout << "Enter the details of the new product!\n";
     // taking the name of the product and storing it in the new index, i.e. since there are 10 items initially, NUMS_ITEMS++ will make it 11 for first new item, and 12,13,14 every time the function will be called. 
     string nameOfNewProduct;

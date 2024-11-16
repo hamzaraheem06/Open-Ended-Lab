@@ -184,7 +184,7 @@ void displayOrder(int noOfItems) {
     cout << "\n\n";
 }
 
-// void calc
+
 
 
 

@@ -4,14 +4,16 @@ using namespace std;
 
 // defining all the global variables
 
-const int NUM_ITEMS = 10;
+const int MAX_ITEMS = 20; // Maximum number of products the store can have
+int NUM_ITEMS = 10; // current number of products the store have.
 
 // Parallel arrays to store item attributes
-string names[NUM_ITEMS] = { "Laptop", "Phone", "Tablet", "Headphones", "Charger", "Keyboard", "Mouse", "Monitor", "Printer", "USB Cable" };
-double prices[NUM_ITEMS] = { 60000, 30000, 15000, 2000, 500, 1500, 700, 10000, 5000, 100 };
-int quantities[NUM_ITEMS] = { 10, 15, 5, 20, 50, 30, 40, 8, 12, 100 };
-int orderIndexes[NUM_ITEMS], quantityOfProduct[NUM_ITEMS]; // arrays for user order
+string names[MAX_ITEMS] = { "Laptop", "Phone", "Tablet", "Headphones", "Charger", "Keyboard", "Mouse", "Monitor", "Printer", "USB Cable" };
+double prices[MAX_ITEMS] = { 60000, 30000, 15000, 2000, 500, 1500, 700, 10000, 5000, 100 };
+int quantities[MAX_ITEMS] = { 10, 15, 5, 20, 50, 30, 40, 8, 12, 100 };
+int orderedItemsIndex[MAX_ITEMS], quantityOfProduct[MAX_ITEMS]; // arrays for user order
 
+// display all the products the store currently have. 
 void displayItems() {
     cout << "Displaying the Products!\n";
     cout << "Index" << "\t\t" << "Name" << "\t\t" << "Price" << "\t\t" << "Quantity" << endl;
@@ -68,6 +70,38 @@ void updatePrices() {
     cout << "\n\n";
 }
 
+// function to add a new product to store
+void addProduct() {
+    if (NUM_ITEMS > MAX_ITEMS) { // if there is no capacity we dont move further in the function, and terminate the function
+        cout << "The store has reached its capacity. We cannot add another product.\n";
+        return;
+    }
+
+    NUM_ITEMS++; // if there is capacity, we increment the current number of items by 1
+    cout << "Enter the details of the new product!\n";
+    // taking the name of the product and storing it in the new index, i.e. since there are 10 items initially, NUMS_ITEMS++ will make it 11 for first new item, and 12,13,14 every time the function will be called. 
+    string nameOfNewProduct;
+    double priceOfNewProduct;
+    int quantityOfNewProduct;
+
+    cout << "\nEnter the name of product: ";
+    cin >> nameOfNewProduct;
+    names[NUM_ITEMS] = nameOfNewProduct;
+
+    // taking the price of the new product
+    cout << "\nEnter the price of the product: ";
+    cin >> priceOfNewProduct;
+    prices[NUM_ITEMS] = priceOfNewProduct;
+
+    // taking the quantity of the new product
+    cout << "\nEnter the avaialable quantity of the product: ";
+    cin >> quantityOfNewProduct;
+    quantities[NUM_ITEMS] = quantityOfNewProduct;
+
+    cout << "The product has been added to the store......\n";
+}
+
+// function to place an order
 int placeOrder() {
     cout << "Placing an order!";
     int indexOfProduct, quantity, i = 0;
@@ -81,8 +115,8 @@ int placeOrder() {
                 cout << "\nEnter a valid index. ";
                 continue;
             }
-        } while (indexOfProduct > 10);
-        orderIndexes[i] = indexOfProduct; // storing the index in an array at the index we created for the orderList i.e. i , so that in case of multiple items, we can store them.
+        } while (indexOfProduct > NUM_ITEMS);
+        orderedItemsIndex[i] = indexOfProduct; // storing the index in an array at the index we created for the orderList i.e. i , so that in case of multiple items, we can store them.
 
         // to get the quantity of the product to be ordered, and also validating it.
         do {
@@ -119,12 +153,13 @@ int placeOrder() {
     return i; // i represents the number of elements to be order items.
 }
 
+// function to display the placed order
 void displayOrder(int noOfItems) {
     cout << "Displaying the order!\n";
     cout << "You ordered: \nName\t\tQuatity\t\tPrice Per Item\n";
 
     for (int i = 0; i <= noOfItems; i++) {
-        cout << names[i] << "\t\t" << quantities[i] << "\t\t" << prices[i] << "\n";
+        cout << names[orderedItemsIndex[i]] << "\t\t" << quantityOfProduct[i] << "\t\t" << prices[orderedItemsIndex[i]] << "\n";
     }
 
     char payment;
@@ -139,12 +174,15 @@ void displayOrder(int noOfItems) {
     cout << "\n\n";
 }
 
+
+
+
 int main() {
     cout << "Welcome to XYZ Store!\n";
     displayItems();
     char option;
     do {
-        cout << "\n1. View the products\n2. Update prices of pre-exsisting products\n3. Place an order\n4. Exit" << endl;
+        cout << "\n1. View the products\n2. Add a new (Please run the option 1 after adding the new product to display the changes )\n3. Update prices of pre-exsisting products (Please run the option 1 after updating the price to display the changes )\n4. Place an order\n5. Exit" << endl;
         cout << "Your choice: ";
         cin >> option;
         switch (option) {
@@ -152,12 +190,15 @@ int main() {
             displayItems();
             break;
         case '2':
-            updatePrices();
+            addProduct();
             break;
         case '3':
-            displayOrder(placeOrder());
+            updatePrices();
             break;
         case '4':
+            displayOrder(placeOrder());
+            break;
+        case '5':
             cout << "Exiting........." << endl;
             return 0;
         }

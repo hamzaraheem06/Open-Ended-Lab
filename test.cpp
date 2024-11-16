@@ -77,7 +77,7 @@ void updatePrices() {
 
 // function to add a new product to store
 void addProduct() {
-    if (NUM_ITEMS >= MAX_ITEMS) { // if there is no capacity we dont move further in the function, and terminate the function 
+    if (NUM_ITEMS > MAX_ITEMS) { // if there is no capacity we dont move further in the function, and terminate the function 
         cout << "The store has reached its capacity. We cannot add another product.\n";
         return;
         // since the array index starts from 0 we had to make it more than equal to.
@@ -104,7 +104,7 @@ void addProduct() {
     cin >> quantityOfNewProduct;
     quantities[NUM_ITEMS] = quantityOfNewProduct;
 
-     NUM_ITEMS++; // if there is capacity, we increment the current number of items by 1
+    NUM_ITEMS++; // if there is capacity, we increment the current number of items by 1
     // incrementing the index AFTER the product has been added 
 
 

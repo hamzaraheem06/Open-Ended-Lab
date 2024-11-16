@@ -21,7 +21,7 @@ int orderedItemsIndex[MAX_ITEMS], quantityOfProduct[MAX_ITEMS]; // arrays for us
 // display all the products the store currently have. 
 void displayItems() {
     cout << "Displaying the Products!\n";
-    cout << "Index" << "\t\t" << "Name" << "\t\t" << "Price" << "\t\t" << "Quantity" << endl;
+    cout << "Index" << "\t\t" << "Name" << "\t\t" << "Price(PKR)" << "\t\t" << "Quantity(Unit)" << endl;
     for (int i = 0; i < NUM_ITEMS; i++) {
         cout << i << "\t\t" << names[i] << "\t\t" << prices[i] << "\t\t" << quantities[i] << endl;
     }
@@ -163,6 +163,33 @@ int placeOrder() {
     return i; // i represents the number of elements to be order items.
 }
 
+// function to calculate the bill
+double checkOut(int noOfItems) {
+    double total = 0;
+    for (int i = 0; i <= noOfItems; i++) {
+        total += (quantityOfProduct[i] * prices[orderedItemsIndex[i]]);
+    }
+
+    // applying the discount according to given criterai
+    double discount = 1;
+    if (total >= 5000 && total < 10000)
+        discount = total * 0.05;
+    else if (total >= 10000)
+        discount = total * 0.1;
+
+    total -= discount; // price after applying discount
+
+    // calculating the sales tax according to given value
+    double salesTax;
+    salesTax = total * 0.15;
+
+    total += salesTax; // price after applying the sales tax
+
+    return total;
+}
+
+
+
 // function to display the placed order
 void displayOrder(int noOfItems) {
     cout << "Displaying the order!\n";
@@ -176,15 +203,15 @@ void displayOrder(int noOfItems) {
     cout << "Proceed to payment (y/n): ";
     cin >> payment;
 
-    // if (payment == 'y')
-    //     checkout();
-    // else
-    //     return;
+    if (payment == 'y') {
+        cout << "Your total is: " << checkOut(noOfItems) << "\nPay this at the counter, Thanks for shopping.";
+        exit(0);
+    }
+    else
+        return;
 
     cout << "\n\n";
 }
-
-
 
 
 
@@ -193,7 +220,7 @@ int main() {
     displayItems();
     char option;
     do {
-        cout << "\n1. View the products\n2. Add a new (Please run the option 1 after adding the new product to display the changes )\n3. Update prices of pre-exsisting products (Please run the option 1 after updating the price to display the changes )\n4. Place an order\n5. Exit" << endl;
+        cout << "\n1. View the products\n2. Add a new product (Please run the option 1 after adding the new product to display the changes )\n3. Update prices of pre-exsisting products (Please run the option 1 after updating the price to display the changes )\n4. Place an order\n5. Exit" << endl;
         cout << "Your choice: ";
         cin >> option;
         switch (option) {

@@ -77,12 +77,12 @@ void updatePrices() {
 
 // function to add a new product to store
 void addProduct() {
-    if (NUM_ITEMS > MAX_ITEMS) { // if there is no capacity we dont move further in the function, and terminate the function
+    if (NUM_ITEMS >= MAX_ITEMS) { // if there is no capacity we dont move further in the function, and terminate the function 
         cout << "The store has reached its capacity. We cannot add another product.\n";
         return;
+        // since the array index starts from 0 we had to make it more than equal to.
     }
 
-    NUM_ITEMS++; // if there is capacity, we increment the current number of items by 1
 
     cout << "Enter the details of the new product!\n";
     // taking the name of the product and storing it in the new index, i.e. since there are 10 items initially, NUMS_ITEMS++ will make it 11 for first new item, and 12,13,14 every time the function will be called. 
@@ -103,6 +103,10 @@ void addProduct() {
     cout << "\nEnter the avaialable quantity of the product: ";
     cin >> quantityOfNewProduct;
     quantities[NUM_ITEMS] = quantityOfNewProduct;
+
+     NUM_ITEMS++; // if there is capacity, we increment the current number of items by 1
+    // incrementing the index AFTER the product has been added 
+
 
     cout << "The product has been added to the store......\n";
 }

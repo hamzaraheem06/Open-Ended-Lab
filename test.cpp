@@ -1,4 +1,5 @@
 #include <iostream>
+#include<string.h>
 
 using namespace std;
 
@@ -9,8 +10,7 @@ int NUM_ITEMS = 10; // current number of products the store have.
 
 // Parallel arrays to store item attributes
 
-// NULL is built in constant that refers that the current location is empty/uninitialized
-
+// empty string refers to an empty slot. 
 string names[MAX_ITEMS] = { "Laptop", "Phone", "Tablet", "Headphones", "Charger", "Keyboard", "Mouse", "Monitor", "Printer", "USB Cable" , "", "", "", "", "", "", "", "", "", "" };
 
 // 0 means it is empty or uninitialized
@@ -21,9 +21,9 @@ int orderedItemsIndex[MAX_ITEMS], quantityOfProduct[MAX_ITEMS]; // arrays for us
 // display all the products the store currently have. 
 void displayItems() {
     cout << "Displaying the Products!\n";
-    cout << "Index" << "\t\t" << "Name" << "\t\t" << "Price(PKR)" << "\t\t" << "Quantity(Unit)" << endl;
+    cout << "Index" << "\t\t" << "Name" << "\t\t" << "Price(PKR)" << "\t" << "Quantity(Unit)" << endl;
     for (int i = 0; i < NUM_ITEMS; i++) {
-        cout << i << "\t\t" << names[i] << "\t\t" << prices[i] << "\t\t" << quantities[i] << endl;
+        cout << i << "\t\t" << names[i] << (names[i].length() > 7 ? "\t" : "\t\t") << prices[i] << "\t\t" << quantities[i] << endl;
     }
     cout << "\n\n";
 }
@@ -60,18 +60,6 @@ void updatePrices() {
 
         prices[indexOfProduct] = newPrice;
     }
-
-    // for (int i = 0; i < NUM_ITEMS; i++) {
-    //     if (prices[i] != )
-    //     {
-    //         cout << "enter the new price of " << names[i] << ": ";
-    //         cin >> newPrice;
-    //         prices[i] = newPrice;
-    //         cout << "the new price of " << names[i] << " is " << newPrice << endl;
-    //         productFound = true;
-    //         break;
-    //     }
-    // }
     cout << "\n\n";
 }
 
@@ -110,6 +98,62 @@ void addProduct() {
 
     cout << "The product has been added to the store......\n";
 }
+
+
+void changeOrder() {
+    int  indexOfChangedOrder;
+    do {
+        cout << "Enter the index of the order item you want to change: ";
+        cin >> indexOfChangedOrder;
+    } while (indexOfChangedOrder >= NUM_ITEMS);
+
+    char changeAttribute;
+    cout << "What do you want to change?\n\t1. Quantity\n\t2. Entire product";
+    cin >> changeAttribute;
+
+    switch (changeAttribute) {
+    case '1':
+        int changedQuantity;
+        // taking the new quantity 
+        do {
+            cout << "\nEnter the new quantity of the product: ";
+            cin >> changedQuantity;
+
+            if (changedQuantity > quantities[orderedItemsIndex[indexOfChangedOrder]]) {
+                cout << "\nSorry, we only have " << quantities[orderedItemsIndex[indexOfChangedOrder]] << " items at the moment. " << endl;
+                continue;
+            }
+        } while (changedQuantity > quantities[orderedItemsIndex[indexOfChangedOrder]]);
+        quantityOfProduct[indexOfChangedOrder] = changedQuantity;
+        cout << "The quantity has been changed.....\n";
+        break;
+
+    case '2':
+        int indexOfchangedProduct;
+        do {
+            cout << "\nEnter the new product you want to order: ";
+            cin >> indexOfchangedProduct;
+        } while (indexOfchangedProduct > NUM_ITEMS);
+        orderedItemsIndex[indexOfChangedOrder] = indexOfchangedProduct;
+
+        int quantityOfchangedProduct;
+        do {
+            cout << "\nEnter the quantity of the new product: ";
+            cin >> quantityOfchangedProduct;
+
+            if (quantityOfchangedProduct > quantities[orderedItemsIndex[indexOfchangedProduct]]) {
+                cout << "\nSorry, we only have " << quantities[orderedItemsIndex[indexOfchangedProduct]] << " items at the moment. " << endl;
+                continue;
+            }
+        } while (quantityOfchangedProduct > quantities[indexOfChangedOrder]);
+        quantityOfProduct[indexOfChangedOrder] = quantityOfchangedProduct;
+        cout << "The product has been changed..........\n";
+
+    default:
+        break;
+    }
+}
+
 
 // function to place an order
 int placeOrder() {
@@ -188,32 +232,40 @@ double checkOut(int noOfItems) {
     return total;
 }
 
-
-
 // function to display the placed order
 void displayOrder(int noOfItems) {
-    cout << "Displaying the order!\n";
-    cout << "You ordered: \nName\t\tQuatity\t\tPrice Per Item\n";
+    while (true) {
+        cout << "Displaying the order!\n";
+        cout << "You ordered: \nName\t\tQuatity\t\tPrice Per Item\n";
 
-    for (int i = 0; i <= noOfItems; i++) {
-        cout << names[orderedItemsIndex[i]] << "\t\t" << quantityOfProduct[i] << "\t\t" << prices[orderedItemsIndex[i]] << "\n";
+        for (int i = 0; i <= noOfItems; i++) {
+            cout << i << "\t\t" << names[orderedItemsIndex[i]] << (names[orderedItemsIndex[i]].length() > 7 ? "\t" : "\t\t") << quantityOfProduct[i] << "\t\t" << prices[orderedItemsIndex[i]] << "\n";
+        }
+
+        char changeExistingOrder;
+
+        cout << "Do you want to change something in the order? (y/n): ";
+        cin >> changeExistingOrder;
+
+        if (changeExistingOrder == 'y') {
+            changeOrder();
+            continue;
+        }
+
+        char payment;
+        cout << "Proceed to payment (y/n): ";
+        cin >> payment;
+
+        if (payment == 'y') {
+            cout << "Your total is: " << checkOut(noOfItems) << "\nPay this at the counter, Thanks for shopping.";
+            exit(0); // forcing an exit after the checkout.
+        }
+        else
+            return;
+
+        cout << "\n\n";
     }
-
-    char payment;
-    cout << "Proceed to payment (y/n): ";
-    cin >> payment;
-
-    if (payment == 'y') {
-        cout << "Your total is: " << checkOut(noOfItems) << "\nPay this at the counter, Thanks for shopping.";
-        exit(0);
-    }
-    else
-        return;
-
-    cout << "\n\n";
 }
-
-
 
 int main() {
     cout << "Welcome to XYZ Store!\n";

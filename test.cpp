@@ -37,7 +37,7 @@ void updatePrices() {
         cout << "Enter the index of the product whose price has to be changed: ";
         cin >> indexOfProduct;
 
-        if (indexOfProduct >= 0 && indexOfProduct < 10) {
+        if (indexOfProduct >= 0 && indexOfProduct < NUM_ITEMS) {
             productFound = true;
             break;
         }
@@ -108,7 +108,8 @@ void changeOrder() {
     } while (indexOfChangedOrder >= NUM_ITEMS);
 
     char changeAttribute;
-    cout << "What do you want to change?\n\t1. Quantity\n\t2. Entire product";
+    cout << "What do you want to change?\n\t1. Quantity\n\t2. Entire product\n";
+    cout << "Your choice: ";
     cin >> changeAttribute;
 
     switch (changeAttribute) {
@@ -236,7 +237,7 @@ double checkOut(int noOfItems) {
 void displayOrder(int noOfItems) {
     while (true) {
         cout << "Displaying the order!\n";
-        cout << "You ordered: \nName\t\tQuatity\t\tPrice Per Item\n";
+        cout << "You ordered: \nIndex\t\tName\t\tQuatity\t\tPrice Per Item\n";
 
         for (int i = 0; i <= noOfItems; i++) {
             cout << i << "\t\t" << names[orderedItemsIndex[i]] << (names[orderedItemsIndex[i]].length() > 7 ? "\t" : "\t\t") << quantityOfProduct[i] << "\t\t" << prices[orderedItemsIndex[i]] << "\n";

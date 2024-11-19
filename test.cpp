@@ -1,5 +1,5 @@
 #include <iostream>
-#include<string.h>
+#include<string.h> // for lenght method to be performed on strings.
 
 using namespace std;
 
@@ -9,13 +9,12 @@ const int MAX_ITEMS = 20; // Maximum number of products the store can have
 int NUM_ITEMS = 10; // current number of products the store have.
 
 // Parallel arrays to store item attributes
-
 // empty string refers to an empty slot. 
 string names[MAX_ITEMS] = { "Laptop", "Phone", "Tablet", "Headphones", "Charger", "Keyboard", "Mouse", "Monitor", "Printer", "USB Cable" , "", "", "", "", "", "", "", "", "", "" };
-
 // 0 means it is empty or uninitialized
 double prices[MAX_ITEMS] = { 60000, 30000, 15000, 2000, 500, 1500, 700, 10000, 5000, 100 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 int quantities[MAX_ITEMS] = { 10, 15, 5, 20, 50, 30, 40, 8, 12, 100 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
 int orderedItemsIndex[MAX_ITEMS], quantityOfProduct[MAX_ITEMS]; // arrays for user order
 
 // display all the products the store currently have. 
@@ -24,12 +23,20 @@ void displayItems() {
     cout << "Index" << "\t\t" << "Name" << "\t\t" << "Price(PKR)" << "\t" << "Quantity(Unit)" << endl;
     for (int i = 0; i < NUM_ITEMS; i++) {
         cout << i << "\t\t" << names[i] << (names[i].length() > 7 ? "\t" : "\t\t") << prices[i] << "\t\t" << quantities[i] << endl;
-    }
+    } // ternary operator is used to check for the length of the names, this is done to remove the printing error when the name of items exceed a specific character lenght, which in this case is 6
     cout << "\n\n";
 }
 
 // update prices of items if wanted
-void updatePrices() {
+void updatePrice() {
+    string adminPass = "Admin@123";
+    string enteredPass;
+    cout << "Enter the password to perform this task: ";
+    getline(cin, enteredPass);
+
+    if (enteredPass != adminPass)
+        return;  // checking if an authorized individual is performing this operation 
+
     cout << "Updating the price of a pre-existing product!\n";
     int newPrice, indexOfProduct;
     bool productFound = false;
@@ -38,7 +45,7 @@ void updatePrices() {
         cin >> indexOfProduct;
 
         if (indexOfProduct >= 0 && indexOfProduct < NUM_ITEMS) {
-            productFound = true;
+            productFound = true; // if the entered index is a valid index then we change the value of productFound to true. 
             break;
         }
         else {
@@ -47,7 +54,7 @@ void updatePrices() {
         }
     } while (true);
 
-    if (productFound == true) {
+    if (productFound == true) { // The price will only be changed if the entered index is a valid index. i.e. the items is available at the store. 
         do {
             cout << "Enter the new price of " << names[indexOfProduct] << ": ";
             cin >> newPrice;
@@ -73,7 +80,7 @@ void addProduct() {
 
 
     cout << "Enter the details of the new product!\n";
-    // taking the name of the product and storing it in the new index, i.e. since there are 10 items initially, NUMS_ITEMS++ will make it 11 for first new item, and 12,13,14 every time the function will be called. 
+
     string nameOfNewProduct;
     double priceOfNewProduct;
     int quantityOfNewProduct;
@@ -94,8 +101,7 @@ void addProduct() {
 
     NUM_ITEMS++; // if there is capacity, we increment the current number of items by 1
     // incrementing the index AFTER the product has been added 
-
-
+    // taking the name of the product and storing it in the new index, i.e. since there are 10 items initially, NUMS_ITEMS++ will make it 11 for first new item, and 12,13,14 every time the function will be called.  
     cout << "The product has been added to the store......\n";
 }
 
@@ -284,7 +290,7 @@ int main() {
             addProduct();
             break;
         case '3':
-            updatePrices();
+            updatePrice();
             break;
         case '4':
             displayOrder(placeOrder());
